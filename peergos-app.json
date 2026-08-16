@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "displayName": "Conn Status",
+  "description": "List outbox pending vs inbox acked connector jobs",
+  "version": "0.1.0",
+  "author": "Verae",
+  "launchable": true,
+  "folderAction": false,
+  "fileExtensions": [],
+  "permissions": [
+    "STORE_APP_DATA"
+  ]
+}

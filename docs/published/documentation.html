@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>connector-status</title><style>body{font-family:Georgia,serif;max-width:46rem;margin:2rem auto;padding:0 1rem} pre{white-space:pre-wrap}</style></head><body><pre># Conn Status
+
+List outbox pending vs inbox acked connector jobs
+
+Specialist: Messaging + host engineer.
+# Installation — Conn Status
+
+## Requirements
+
+- Peergos account on a Verae host
+- Permissions: STORE_APP_DATA
+- For outbox subjects: desktop-host connector running
+
+## Steps
+
+1. Copy `peergos-app.json` and `assets/` into Drive (or use OrgTool / gallery).
+2. Context menu on `peergos-app.json` → **Install App**.
+3. Open from Apps launcher.
+4. Dark theme: Peergos passes `?theme=dark-mode`.
+
+## Uninstall
+
+Apps launcher → remove `Conn Status`. Data remains under `/.apps/` until deleted.
+# Developer reference — verae-app-connector-status
+
+## Layout
+
+```
+peergos-app.json
+assets/index.html
+assets/sdk.js
+src/peergos-sdk.mjs
+src/lib.mjs
+tests/lib.test.mjs
+tests/certify-peergos.sh
+```
+
+## Integration
+
+Sandbox `fetch` → `/peergos-api/v0/data`.  
+Outbox JSON → connector → NATS (`verae-nats-bus/schemas/subjects.json`).  
+Inbox JSON → app lists `/inbox/`.
+
+## Tests
+
+`make test` runs Node unit tests against an in-memory `fetch`.  
+`make certify` adds Peergos compliance (manifest bounds, no NATS/WebSocket).
+
+# Function specs — connector-status
+
+Specialist: Messaging + host engineer.
+
+## listOutbox / listInbox → JSON filenames
+
+## jobStem(name) → string
+
+## classifyJobs(outboxFiles, inboxFiles) → {pending, acked}
+Acked if an inbox name starts with the outbox stem.
+
+# Function specs — connector-status
+
+Specialist: Messaging + host engineer.
+
+## listOutbox / listInbox → JSON filenames
+
+## jobStem(name) → string
+
+## classifyJobs(outboxFiles, inboxFiles) → {pending, acked}
+Acked if an inbox name starts with the outbox stem.
+</pre></body></html>

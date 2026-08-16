@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Conn Status</title>
+  <style>
+:root { --bg:#0a0a0f; --fg:#e0e0e0; --accent:#00d4aa; --muted:#9090a0; --card:#1a1a25; --bd:#2a2a3a; }
+body.dark-mode, body { font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); margin:0; padding:1.5rem; }
+h1 { color:var(--accent); font-size:1.25rem; }
+button, select { background:var(--card); color:var(--fg); border:1px solid var(--bd); padding:.5rem .8rem; margin:.25rem .25rem 0 0; }
+#log { white-space:pre-wrap; font:12px ui-monospace,monospace; color:var(--muted); margin-top:1rem; }
+.card { border:1px solid var(--bd); padding:.75rem; margin:.4rem 0; border-radius:8px; }
+.row { display:flex; flex-wrap:wrap; gap:.5rem; }
+</style>
+</head>
+<body>
+<h1>Connector status</h1>
+<p>Outbox = pending. Inbox match = acked. Ops view. No NATS in the iframe.</p>
+<button id="scan">Scan</button>
+<div id="out"></div>
+<div id="log"></div>
+<script src="sdk.js"></script>
+<script>
+  const log = (m) => { document.getElementById("log").textContent += m + "\n"; };
+  document.getElementById("scan").onclick = async () => {
+    const c = window.VeraeSDK.createClient();
+    try {
+      const o = (await c.list("/outbox")).files.filter((f) => f.endsWith(".json"));
+      const i = (await c.list("/inbox")).files.filter((f) => f.endsWith(".json"));
+      document.getElementById("out").innerHTML =
+        "<div class=\"card\">outbox: " + o.join(", ") + "</div>" +
+        "<div class=\"card\">inbox: " + i.join(", ") + "</div>";
+      log("outbox " + o.length + " inbox " + i.length);
+    } catch (e) { log(e.message); }
+  };
+</script>
+
+</body>
+</html>
